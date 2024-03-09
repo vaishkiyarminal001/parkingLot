@@ -4,7 +4,7 @@ This Java program implements a car parking system with configurable cost strateg
 
 ## Overview
 
-The car parking system is designed to manage parking spaces for different types of vehicles in a multi-floor parking lot. It supports functionalities such as adding vehicles, removing vehicles, checking availability of parking spaces, and calculating parking fees based on a configurable cost strategy.
+The parking system is designed to manage parking spaces for different types of vehicles in a multi-floor parking lot. It supports functionalities such as adding vehicles, removing vehicles, checking availability of parking spaces, and calculating parking fees based on a configurable cost strategy.
 
 ## Functionality
 

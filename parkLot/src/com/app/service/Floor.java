@@ -47,12 +47,19 @@ public class Floor implements FloorService {
 	//NotFoundException NotFoundException if the requested floor or vehicle type is not found.	
 
 	@Override
-	public List<VehicleSpace> initializeVehicleSpaces(int totalSpaces, VehicleType type) throws SomethingWentWrong, NotFoundException{
-		List<VehicleSpace> spaces = new ArrayList<>();
-		for (int i = 1; i <= totalSpaces; i++) {
-			spaces.add(new VehicleSpace(i, type));
-		}
-		return spaces;
+	public List<VehicleSpace> initializeVehicleSpaces(int totalSpaces, VehicleType type) throws SomethingWentWrong, NotFoundException {
+	    if (totalSpaces <= 0) {
+	        throw new SomethingWentWrong("Total spaces must be a positive integer.");
+	    }
+	    if (type == null) {
+	        throw new NotFoundException("Vehicle type cannot be null.");
+	    }
+
+	    List<VehicleSpace> spaces = new ArrayList<>();
+	    for (int i = 1; i <= totalSpaces; i++) {
+	        spaces.add(new VehicleSpace(i, type));
+	    }
+	    return spaces;
 	}
 
 	
@@ -62,9 +69,16 @@ public class Floor implements FloorService {
 	//and in this method i used stream API java 8 feature
 	
 	@Override
-	public boolean hasAvailableSpace(VehicleType type) throws SomethingWentWrong{
-		return vehicleSpaces.stream().anyMatch(space -> space.isAvailable() && space.getType() == type);
+	public boolean hasAvailableSpace(VehicleType type) throws SomethingWentWrong {
+	    // Attempt to check for available space
+	    try {
+	        return vehicleSpaces.stream().anyMatch(space -> space.isAvailable() && space.getType() == type);
+	    } catch (Exception e) {
+	        // Catch any general exception
+	        throw new SomethingWentWrong("An error occurred while checking space availability");
+	    }
 	}
+
 	
 	
 	//In this operation parkVehicle I have initalizes the specific parameters vehicle(check the vehicle type for parking and for the space)
@@ -79,7 +93,8 @@ public class Floor implements FloorService {
 				return space;
 			}
 		}
-		return null;
+		// No space found, throw a specific exception with a message
+	    throw new SomethingWentWrong("No available parking space found for vehicle type: " + vehicle.getType());
 	}
 	
 //removeVechile is used to remove the vehicle from the floor based on its registration number
@@ -87,12 +102,13 @@ public class Floor implements FloorService {
 //SomethingWentWrong and NotFoundException is used, if an error occures during the removel vehicl
 
 	@Override
-	public void removeVehicle(String registrationNumber)throws SomethingWentWrong {
+	public void removeVehicle(String registrationNumber)throws SomethingWentWrong, NotFoundException {
 		for (VehicleSpace space : vehicleSpaces) {
 			if (!space.isAvailable() && space.getVehicle().getRegistrationNumber().equals(registrationNumber)) {
 				space.vacate();
 				break;
 			}
 		}
+		throw new NotFoundException("Vehicle with registration number: " + registrationNumber + " not found");
 	}
 }

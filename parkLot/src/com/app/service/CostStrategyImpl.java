@@ -27,10 +27,21 @@ public class CostStrategyImpl implements CostStrategy {
 			// Assuming parking fee for a truck is 30rs per hour
 			return durationInHours * 30;
 			
+		case SPORTS_CAR:
+            // Assuming parking fee for a sports car is 25rs per hour
+            return durationInHours * 25;
+            
+//		case VAN:
+//			// Assuming parking fee for a van is 15rs per hour
+//			return durationInHours * 15;
+
+			
 		default:
 			// If the vehicle type is not recognized, return 0.0
-			return 0.0;
+			throw new NotFoundException("Unsupported vehicle type: " + type);
 		}
+		
+		
 	}
 	
 }

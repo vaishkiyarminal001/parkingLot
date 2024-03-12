@@ -27,7 +27,12 @@ public class ParkingLot implements ParkingLotService {
     public List<Floor> initializeFloors(int totalFloors, int spacesPerFloor, VehicleType type)throws SomethingWentWrong, NotFoundException {
         List<Floor> init = new ArrayList<>();
         for (int floorNumber = 1; floorNumber <= totalFloors; floorNumber++) {
-            init.add(new Floor(floorNumber, spacesPerFloor, type));
+        	
+        	try {
+        		init.add(new Floor(floorNumber, spacesPerFloor, type));
+        	}catch(Exception e) {
+        		throw new NotFoundException("Error initialize Floors " + floorNumber + ": " + e.getMessage());
+        	}
         }
         return init;
     }
@@ -43,8 +48,9 @@ public class ParkingLot implements ParkingLotService {
         if (floorNumber >= 1 && floorNumber <= floors.size()) {
             Floor floor = floors.get(floorNumber - 1);
             return floor.hasAvailableSpace(type);
+        }else {
+        	throw new NotFoundException("Floor number "+ floorNumber + " not found");
         }
-        return false;
     }
     
     
@@ -64,6 +70,7 @@ public class ParkingLot implements ParkingLotService {
             }
         }
         System.out.println("Parking is full for type " + vehicle.getType());
+//        throw new SomethingWentWrong("No Available parking space for vehicle type: " + vehicle.getType());
     }
     
     
@@ -73,10 +80,23 @@ public class ParkingLot implements ParkingLotService {
 
     @Override
     public void removeVehicle(String registrationNumber)throws SomethingWentWrong{
-        for (Floor floor : floors) {
-        	 floor.removeVehicle(registrationNumber);
+        boolean removed = false;
+    	for (Floor floor : floors) {
+        	
+        	try {
+        		floor.removeVehicle(registrationNumber);
+        		removed = true;
+        		break;
+        	}catch(SomethingWentWrong e) {
+        		
+        	}
+        	 
         
         	 }
+    	
+    	if(!removed) {
+    		throw new SomethingWentWrong("Vehicle with registration number: " + registrationNumber + " not found");
+    	}
            
         }
     }

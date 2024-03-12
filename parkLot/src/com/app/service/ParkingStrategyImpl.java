@@ -28,7 +28,13 @@ public class ParkingStrategyImpl implements ParkingStrategy {
 	
 	@Override
 	public void init(int totalFloors, int spacesPerFloor, VehicleType type) throws SomethingWentWrong, NotFoundException {
-		parkingLot = new ParkingLot(totalFloors, spacesPerFloor, type);
+		try {
+			parkingLot = new ParkingLot(totalFloors, spacesPerFloor, type);
+		}catch(Exception e) {
+			throw new NotFoundException("Error initializing parking lot: " + e.getMessage());
+		}
+		
+		
 	}
 	
 //In addVehicle operation I passed parameters as vehicle(this is used for addeding the vehicle)

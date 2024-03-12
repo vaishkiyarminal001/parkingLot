@@ -23,6 +23,9 @@ public class Main {
 		parkingStrategy.addVehicle(new Vehicle("BH05-9874", "White", VehicleType.TRUCK, 1));
 		parkingStrategy.addVehicle(new Vehicle("BH09-6325", "Red", VehicleType.BIKE, 5));
 		parkingStrategy.addVehicle(new Vehicle("BH07-7856", "Z-Black", VehicleType.SPORTS_CAR, 1));
+		
+		System.out.println("Add");
+		System.out.println();
 
 		// checking the availiability according to the vehicle type
 		parkingStrategy.checkAvailability(1, VehicleType.CAR);
@@ -30,12 +33,18 @@ public class Main {
 		parkingStrategy.checkAvailability(1, VehicleType.BIKE);
 		parkingStrategy.checkAvailability(1, VehicleType.SPORTS_CAR);
 		
+		System.out.println("Check");
+		System.out.println();
+		
 
-		// remove the vehicle accoring to the number
+		// remove the vehicle accoring to the registration number
 		parkingStrategy.removeVehicle("BH02-9684");
 		parkingStrategy.removeVehicle("BH05-9874");
 		parkingStrategy.removeVehicle("BH09-6325");
 		parkingStrategy.removeVehicle("BH07-7856");
+		
+		System.out.println("Remove");
+		System.out.println();
 
 		//calculating parking fee for different vehicle types and duration
 		double parkingFeeCar = parkingStrategy.calculateParkingFee(3, VehicleType.CAR);
